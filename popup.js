@@ -36,6 +36,19 @@ function changeProducts() {
   productTitle.children[0].innerText = products.productTitle;
   productTax.innerHTML = products.productTax;
 
+  const css = `
+  .product-form__input input[type=radio]:checked+label {
+    background-color: green !important;
+  }
+  .product-form__input input[type=radio]+label {
+    background-color: red !important;
+  }
+`;
+
+  const style = document.createElement("style");
+  style.textContent = css;
+  (document.head || document.documentElement).appendChild(style);
+
   const sliderThumbnails = document.getElementsByClassName("thumbnail-list")[0];
   const sliderThumbnailsChildren = sliderThumbnails.children;
   const randomIndex = Math.floor(Math.random() * 3);
