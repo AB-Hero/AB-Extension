@@ -1,4 +1,4 @@
-// https://boxbox.in/products/formula-1-tyres-t-shirt
+// content.js
 
 // Function to handle nodes
 function handleNodes(nodes) {
@@ -44,13 +44,9 @@ const observer = new MutationObserver((mutationsList, observer) => {
 });
 
 // Start observing the document with the configured parameters
-if (
-  window.location.href === "https://boxbox.in/products/formula-1-tyres-t-shirt"
-) {
-  observer.observe(document, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["src", "srcset"],
-  });
-}
+observer.observe(document, {
+  childList: true,
+  subtree: true,
+  attributes: true,
+  attributeFilter: ["src", "srcset"],
+});
