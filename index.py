@@ -48,6 +48,23 @@ def score_element(element, max_index, max_font_size, index):
 
     return final_score
 
+global tracker
+tracker = {
+    'num': 0,
+    'cart': 0,
+    'buy': 0
+}
+
+@app.route('/conversions', methods=['GET'])
+def track():
+    objective = request.args.get('objective')
+    tracker[objective] += 1
+    return jsonify(tracker)
+
+@app.route('/stats', methods=['GET'])
+def stats():
+    return jsonify(tracker)
+
 @app.route('/best-element', methods=['GET'])
 def best_element():
     url = request.args.get('url')

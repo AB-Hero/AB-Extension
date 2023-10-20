@@ -29,7 +29,8 @@ function changeImageSrc(img) {
 const observer = new MutationObserver((mutationsList, observer) => {
   for (let mutation of mutationsList) {
     if (mutation.type === "childList") {
-      handleNodes(mutation.addedNodes);
+      //handleNodes(mutation.addedNodes);
+      console.log(mutation.target);
     } else if (
       mutation.type === "attributes" &&
       (mutation.attributeName === "src" ||
@@ -38,19 +39,33 @@ const observer = new MutationObserver((mutationsList, observer) => {
       (mutation.target.src !== random ||
         mutation.target.srcset !== `${random} 1x`)
     ) {
-      changeImageSrc(mutation.target);
+      //changeImageSrc(mutation.target);
     }
   }
 });
 
-// Start observing the document with the configured parameters
-if (
-  window.location.href === "https://boxbox.in/products/formula-1-tyres-t-shirt/"
-) {
-  observer.observe(document, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["src", "srcset"],
-  });
+observer.observe(document, {
+  childList: true,
+  subtree: true,
+  attributes: true,
+  attributeFilter: ["src", "srcset"],
+});
+
+//javascript http request to :5000/conversions?objective=num
+
+const abVersions = {};
+
+function changeProducts() {
+  const products = {
+    productText: "boxox",
+    productTitle: "Formula 1 Tys T-Shirt",
+    productTax: `Free <a href="/policies/shipping-policy">Shipping</a> across India`,
+  };
+  const productText = document.getElementsByClassName("product__text")[0];
+  const productTitle = document.getElementsByClassName("product__title")[0];
+  const productTax = document.getElementsByClassName("product__tax")[0];
+
+  productText.innerText = products.productText;
+  productTitle.children[0].innerText = products.productTitle;
+  productTax.innerHTML = products.productTax;
 }
