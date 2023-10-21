@@ -25,12 +25,44 @@ function changeImageSrc(img) {
   img.srcset = `${newSrc} 1x`; // replace srcset as well
 }
 
+// Define changes to be made
+const changes = {
+  ".product__text": {
+    func: (element, val) => (element.innerText = val),
+    args: ["bobox"],
+  },
+  ".product__title": {
+    func: (element, val) => (element.children[0].innerText = val),
+    args: ["Other T shirt"],
+  },
+  ".product__tax": {
+    func: (element, val) => (element.innerHTML = val),
+    args: [
+      `Free <a href="/policies/shipping-policy">Shipping</a> across India`,
+    ],
+  },
+};
+
+const chosen = {};
 // Create an observer instance linked to the callback function
 const observer = new MutationObserver((mutationsList, observer) => {
   for (let mutation of mutationsList) {
     if (mutation.type === "childList") {
-      //handleNodes(mutation.addedNodes);
-      console.log(mutation.target);
+      // Check if the added nodes contain elements that match the selectors used in changes
+      for (let selector in changes) {
+        const element = mutation.target.querySelector(selector);
+        if (element && chosen[selector] === undefined) {
+          const randomIndex = Math.floor(
+            Math.random() * (changes[selector].args.length + 1)
+          );
+          if (randomIndex < changes[selector].args.length) {
+            const val = changes[selector].args[randomIndex];
+            changes[selector].func(element, val);
+          }
+          console.log(selector, randomIndex);
+          chosen[selector] = randomIndex;
+        }
+      }
     } else if (
       mutation.type === "attributes" &&
       (mutation.attributeName === "src" ||
@@ -54,18 +86,3 @@ observer.observe(document, {
 //javascript http request to :5000/conversions?objective=num
 
 const abVersions = {};
-
-function changeProducts() {
-  const products = {
-    productText: "boxox",
-    productTitle: "Formula 1 Tys T-Shirt",
-    productTax: `Free <a href="/policies/shipping-policy">Shipping</a> across India`,
-  };
-  const productText = document.getElementsByClassName("product__text")[0];
-  const productTitle = document.getElementsByClassName("product__title")[0];
-  const productTax = document.getElementsByClassName("product__tax")[0];
-
-  productText.innerText = products.productText;
-  productTitle.children[0].innerText = products.productTitle;
-  productTax.innerHTML = products.productTax;
-}
